@@ -9,6 +9,11 @@ public partial class MainPage : ContentPage
 		InitializeComponent();
 	}
 
+	private async void OnGoToGitHubUsersPageClicked(object sender, EventArgs e)
+	{
+		await Navigation.PushAsync(new GitHubUsersPage());
+	}
+
 	private void OnCounterClicked(object sender, EventArgs e)
 	{
 		count++;

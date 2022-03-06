@@ -7,15 +7,16 @@
         <Grid RowSpacing="25" RowDefinitions="Auto,Auto,Auto,Auto,*"
               Padding="{OnPlatform iOS='30,60,30,30', Default='30'}">
 
-            <Label 
-                Text="Hello, World!"
+            <Button 
+                Text="Go to GitHub Users Page"
+                FontAttributes="Bold"
                 Grid.Row="0"
-                SemanticProperties.HeadingLevel="Level1"
-                FontSize="32"
+                SemanticProperties.Hint="Go to Github Users Page"
+                Clicked="OnGoToGitHubUsersPageClicked"
                 HorizontalOptions="Center" />
 
             <Label 
-                Text="Welcome to .NET Multi-platform App UI"
+                Text="Welcome to Try MAUI App"
                 Grid.Row="1"
                 SemanticProperties.HeadingLevel="Level1"
                 SemanticProperties.Description="Welcome to dot net Multi platform App U I"
