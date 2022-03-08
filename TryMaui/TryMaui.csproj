@@ -53,6 +53,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.2" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <Compile Update="Pages\GitHubUsersPage.xaml.cs">
 	    <DependentUpon>GitHubUsersPage.xaml</DependentUpon>
 	  </Compile>

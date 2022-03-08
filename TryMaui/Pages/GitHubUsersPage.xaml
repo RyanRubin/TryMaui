@@ -6,5 +6,6 @@
              BackgroundColor="White">
     <StackLayout>
         <Label Text="GitHub Users" />
+        <Button Text="Test" Clicked="TestButton_Clicked" />
     </StackLayout>
 </ContentPage>
