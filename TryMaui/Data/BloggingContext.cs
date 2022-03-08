@@ -21,10 +21,12 @@ namespace TryMaui.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            string dbPath = Path.Combine(FileSystem.AppDataDirectory, "blogs.db3");
+            //string dbPath = Path.Combine(FileSystem.AppDataDirectory, "blogs.db3");
 
-            optionsBuilder
-                .UseSqlite($"Filename={dbPath}");
+            //optionsBuilder
+            //    .UseSqlite($"Filename={dbPath}");
+
+            optionsBuilder.UseSqlServer("User ID=sa;Password=Password123!;Initial Catalog=Blogging;Server=localhost,1433");
         }
     }
 }
