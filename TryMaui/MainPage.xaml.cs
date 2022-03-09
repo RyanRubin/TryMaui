@@ -1,25 +1,30 @@
-﻿namespace TryMaui;
+﻿using TryMaui.Dapper;
+
+namespace TryMaui;
 
 public partial class MainPage : ContentPage
 {
-	int count = 0;
+    int count = 0;
 
-	public MainPage()
-	{
-		InitializeComponent();
-	}
+    public MainPage()
+    {
+        InitializeComponent();
+    }
 
-	private async void OnGoToGitHubUsersPageClicked(object sender, EventArgs e)
-	{
-		await Navigation.PushAsync(new GitHubUsersPage());
-	}
+    private async void OnGoToGitHubUsersPageClicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new GitHubUsersPage());
 
-	private void OnCounterClicked(object sender, EventArgs e)
-	{
-		count++;
-		CounterLabel.Text = $"Current count: {count}";
+        var syncService = new DatabaseSyncService(DatabaseSyncService.LocalDatabaseConnectionString, DatabaseSyncService.ServerDatabaseConnectionString);
+        await syncService.ExecuteSync();
+    }
 
-		SemanticScreenReader.Announce(CounterLabel.Text);
-	}
+    private void OnCounterClicked(object sender, EventArgs e)
+    {
+        count++;
+        CounterLabel.Text = $"Current count: {count}";
+
+        SemanticScreenReader.Announce(CounterLabel.Text);
+    }
 }
 
