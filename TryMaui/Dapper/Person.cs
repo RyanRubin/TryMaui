@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TryMaui.Dapper
 {
-    public class Person
+    public class PersonEntity
     {
         public Guid Id { get; set; }
         public string FirstName { get; set; }

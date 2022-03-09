@@ -4,10 +4,15 @@ namespace TryMaui;
 
 public partial class MainPage : ContentPage
 {
+    private readonly IDatabaseSyncService databaseSyncService;
+
+
     int count = 0;
 
-    public MainPage()
+    public MainPage(IDatabaseSyncService databaseSyncService)
     {
+        this.databaseSyncService = databaseSyncService;
+
         InitializeComponent();
     }
 
@@ -15,8 +20,7 @@ public partial class MainPage : ContentPage
     {
         await Navigation.PushAsync(new GitHubUsersPage());
 
-        var syncService = new DatabaseSyncService(DatabaseSyncService.LocalDatabaseConnectionString, DatabaseSyncService.ServerDatabaseConnectionString);
-        await syncService.ExecuteSync();
+        await databaseSyncService.ExecuteSync("LocalDatabase", "ServerDatabase");
     }
 
     private void OnCounterClicked(object sender, EventArgs e)

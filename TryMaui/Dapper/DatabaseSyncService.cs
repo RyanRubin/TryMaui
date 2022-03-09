@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -10,37 +11,35 @@ using System.Threading.Tasks;
 
 namespace TryMaui.Dapper
 {
-    public class DatabaseSyncService
+    public class DatabaseSyncService : IDatabaseSyncService
     {
         // TODO Move these to a config file when MAUI has official config file support
         public const string LocalDatabaseConnectionString = "Server=(localdb)\\MSSQLLocalDB;Integrated Security=true;Database=PeopleData";
         public const string ServerDatabaseConnectionString = "Server=localhost,1433;User=sa;Password=Password123!;Database=PeopleData";
 
-        private readonly string srcConnectionString;
-        private readonly string destConnectionString;
+        private readonly IConfiguration configuration;
 
-        public DatabaseSyncService(string srcConnectionString, string destConnectionString)
+        public DatabaseSyncService(IConfiguration configuration)
         {
-            this.srcConnectionString = srcConnectionString;
-            this.destConnectionString = destConnectionString;
+            this.configuration = configuration;
         }
 
-        public async Task<int> ExecuteSync()
+        public async Task<int> ExecuteSync(string srcConnectionStringName, string destConnectionStringName)
         {
-            IEnumerable<Person> people;
-            using (IDbConnection connection = new SqlConnection(srcConnectionString))
+            IEnumerable<PersonEntity> people;
+            using (IDbConnection connection = new SqlConnection(configuration.GetConnectionString(srcConnectionStringName)))
             {
-                people = await connection.QueryAsync<Person>("SELECT * FROM dbo.People");
+                people = await connection.QueryAsync<PersonEntity>("SELECT * FROM dbo.People");
             }
 
-            string json = JsonSerializer.Serialize(people);
+            string peopleJson = JsonSerializer.Serialize(people);
 
-            using (IDbConnection connection = new SqlConnection(destConnectionString))
+            using (IDbConnection connection = new SqlConnection(configuration.GetConnectionString(destConnectionStringName)))
             {
                 int rowsAffected = await connection.ExecuteAsync(@"
                     MERGE dbo.People AS dest
                     USING (
-	                    SELECT * FROM OPENJSON(@Json) WITH (
+	                    SELECT * FROM OPENJSON(@PeopleJson) WITH (
 		                    Id UNIQUEIDENTIFIER '$.Id',
 		                    FirstName NVARCHAR(50) '$.FirstName',
 		                    LastName NVARCHAR(50) '$.LastName',
@@ -71,7 +70,7 @@ namespace TryMaui.Dapper
 		                    StateId = src.StateId
                     WHEN NOT MATCHED BY SOURCE THEN
 	                    DELETE;
-                ", new { Json = json });
+                ", new { PeopleJson = peopleJson });
 
                 return rowsAffected;
             }
