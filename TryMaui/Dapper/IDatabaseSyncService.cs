@@ -8,6 +8,6 @@ namespace TryMaui.Dapper
 {
     public interface IDatabaseSyncService
     {
-        Task<int> ExecuteSync(string srcConnectionStringName, string destConnectionStringName);
+        Task<int> ExecuteSync(string srcConnectionStringName, string destConnectionStringName, bool isDeleteWhenNotMatchedBySource = true);
     }
 }

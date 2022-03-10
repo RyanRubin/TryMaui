@@ -13,10 +13,6 @@ namespace TryMaui.Dapper
 {
     public class DatabaseSyncService : IDatabaseSyncService
     {
-        // TODO Move these to a config file when MAUI has official config file support
-        public const string LocalDatabaseConnectionString = "Server=(localdb)\\MSSQLLocalDB;Integrated Security=true;Database=PeopleData";
-        public const string ServerDatabaseConnectionString = "Server=localhost,1433;User=sa;Password=Password123!;Database=PeopleData";
-
         private readonly IConfiguration configuration;
 
         public DatabaseSyncService(IConfiguration configuration)
@@ -24,19 +20,33 @@ namespace TryMaui.Dapper
             this.configuration = configuration;
         }
 
-        public async Task<int> ExecuteSync(string srcConnectionStringName, string destConnectionStringName)
+        public async Task<int> ExecuteSync(string srcConnectionStringName, string destConnectionStringName, bool isDeleteWhenNotMatchedBySource = true)
         {
-            IEnumerable<PersonEntity> people;
+            int rowsAffected = 0;
+
+            rowsAffected += await SyncPeople(srcConnectionStringName, destConnectionStringName, isDeleteWhenNotMatchedBySource);
+
+            return rowsAffected;
+        }
+
+        private async Task<int> SyncPeople(string srcConnectionStringName, string destConnectionStringName, bool isDeleteWhenNotMatchedBySource = true)
+        {
+            string peopleJson;
+
             using (IDbConnection connection = new SqlConnection(configuration.GetConnectionString(srcConnectionStringName)))
             {
-                people = await connection.QueryAsync<PersonEntity>("SELECT * FROM dbo.People");
+                var people = await connection.QueryAsync("SELECT * FROM dbo.People");
+                peopleJson = JsonSerializer.Serialize(people);
             }
-
-            string peopleJson = JsonSerializer.Serialize(people);
 
             using (IDbConnection connection = new SqlConnection(configuration.GetConnectionString(destConnectionStringName)))
             {
-                int rowsAffected = await connection.ExecuteAsync(@"
+                string whenNotMatchedBySourceClause = @"
+                    WHEN NOT MATCHED BY SOURCE THEN
+	                    DELETE
+                ";
+
+                string query = @$"
                     MERGE dbo.People AS dest
                     USING (
 	                    SELECT * FROM OPENJSON(@PeopleJson) WITH (
@@ -68,9 +78,11 @@ namespace TryMaui.Dapper
 		                    FirstName = src.FirstName,
 		                    LastName = src.LastName,
 		                    StateId = src.StateId
-                    WHEN NOT MATCHED BY SOURCE THEN
-	                    DELETE;
-                ", new { PeopleJson = peopleJson });
+                    { (isDeleteWhenNotMatchedBySource ? whenNotMatchedBySourceClause : "") }
+                    ;
+                ";
+
+                int rowsAffected = await connection.ExecuteAsync(query, new { PeopleJson = peopleJson });
 
                 return rowsAffected;
             }
