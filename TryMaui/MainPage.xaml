@@ -12,6 +12,7 @@
                 <Button Text="Local to Server Sync" Clicked="OnLocalToServerSync_Clicked" />
                 <Button Text="Server to Local Sync" Clicked="OnServerToLocalSync_Clicked" />
                 <Button Text="Generate and Open PDF" Clicked="OnGenerateAndOpenPdf_Clicked" />
+                <Button Text="Show Save File Dialog" Clicked="OnShowSaveFileDialog_Clicked" />
             </StackLayout>
 
             <Label 

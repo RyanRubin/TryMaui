@@ -2,6 +2,7 @@
 using System.Reflection;
 using TryMaui.Dapper;
 using TryMaui.DinkToPdf;
+using TryMaui.Services;
 
 namespace TryMaui;
 
@@ -20,6 +21,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<MainPage>();
         builder.Services.AddSingleton<IDatabaseSyncService, DatabaseSyncService>();
         builder.Services.AddSingleton<IReportGenerationService, PdfGenerationService>();
+        builder.Services.AddSingleton<IDialogsService, WindowsDialogsService>();
 
         var assembly = Assembly.GetExecutingAssembly();
         using (var stream = assembly.GetManifestResourceStream("TryMaui.appsettings.json"))
