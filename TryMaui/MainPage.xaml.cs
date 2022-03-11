@@ -38,7 +38,15 @@ public partial class MainPage : ContentPage
 
     private void OnGenerateAndOpenPdf_Clicked(object sender, EventArgs e)
     {
-        reportGenerationService.GenerateAndOpenReport("PersonReport", $"<title>Person Report - {DateTime.Now}</title>");
+        reportGenerationService.GenerateAndOpenReport("PersonReport", @"
+            <firstName>John</firstName>
+            <lastName>Doe</lastName>
+            <gender>Male</gender>
+            <streetAddress>123 Some Street</streetAddress>
+            <city>Some City</city>
+            <state>Some State</state>
+            <zip>123456</zip>
+        ");
     }
 
     private void OnShowSaveFileDialog_Clicked(object sender, EventArgs e)
