@@ -59,9 +59,9 @@ namespace TryMaui.Services
             return "";
         }
 
-        public int ShowMessageBox(string text, string title, MessageBoxCheckFlags flags)
+        public DialogBoxCommandID ShowMessageBox(string text, string title, MessageBoxCheckFlags flags)
         {
-            int result = MessageBox(IntPtr.Zero, text, title, (uint)flags);
+            var result = (DialogBoxCommandID)MessageBox(IntPtr.Zero, text, title, (uint)flags);
 
             return result;
         }

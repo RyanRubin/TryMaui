@@ -53,7 +53,7 @@ public partial class MainPage : ContentPage
     {
         string ret = dialogsService.ShowSaveFileDialog("Report.pdf", "PDF Files (*.pdf)|*.pdf");
 
-        int result = dialogsService.ShowMessageBox("Test MB_OK", "title", MessageBoxCheckFlags.MB_OK);
+        DialogBoxCommandID result = dialogsService.ShowMessageBox("Test MB_OK", "title", MessageBoxCheckFlags.MB_OK);
 
         result = dialogsService.ShowMessageBox("Test MB_OKCANCEL", "title", MessageBoxCheckFlags.MB_OKCANCEL);
 
