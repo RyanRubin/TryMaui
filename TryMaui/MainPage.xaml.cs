@@ -52,6 +52,12 @@ public partial class MainPage : ContentPage
     private void OnShowSaveFileDialog_Clicked(object sender, EventArgs e)
     {
         string ret = dialogsService.ShowSaveFileDialog("Report.pdf", "PDF Files (*.pdf)|*.pdf");
+
+        int result = dialogsService.ShowMessageBox("Test MB_OK", "title", MessageBoxCheckFlags.MB_OK);
+
+        result = dialogsService.ShowMessageBox("Test MB_OKCANCEL", "title", MessageBoxCheckFlags.MB_OKCANCEL);
+
+        result = dialogsService.ShowMessageBox("Test MB_YESNO", "title", MessageBoxCheckFlags.MB_YESNO);
     }
 
     private void OnCounterClicked(object sender, EventArgs e)

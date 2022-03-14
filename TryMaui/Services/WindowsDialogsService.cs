@@ -40,25 +40,30 @@ namespace TryMaui.Services
         [DllImport("Comdlg32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern bool GetSaveFileName(ref OpenFileName lpofn);
 
+        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        private static extern int MessageBox(IntPtr hWnd, String text, String caption, uint type);
+
         public string ShowSaveFileDialog(string fileName, string filter)
         {
-            string origFileName = fileName;
-
             var ofn = new OpenFileName();
             ofn.lStructSize = Marshal.SizeOf(ofn);
             ofn.lpstrFile = fileName.PadRight(256);
             ofn.nMaxFile = ofn.lpstrFile.Length;
             ofn.lpstrFilter = $"{filter.Replace("|", "\0")}\0";
 
-            GetSaveFileName(ref ofn);
-
-            if (ofn.lpstrFile == origFileName)
+            if (GetSaveFileName(ref ofn))
             {
-                // the cancel button was pressed in the dialog box
-                return "";
+                return ofn.lpstrFile;
             }
 
-            return ofn.lpstrFile;
+            return "";
+        }
+
+        public int ShowMessageBox(string text, string title, MessageBoxCheckFlags flags)
+        {
+            int result = MessageBox(IntPtr.Zero, text, title, (uint)flags);
+
+            return result;
         }
     }
 }

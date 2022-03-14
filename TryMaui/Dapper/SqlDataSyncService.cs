@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 
 namespace TryMaui.Dapper
 {
-    public class DatabaseSyncService : IDatabaseSyncService
+    public class SqlDataSyncService : IDatabaseSyncService
     {
         private readonly IConfiguration configuration;
 
-        public DatabaseSyncService(IConfiguration configuration)
+        public SqlDataSyncService(IConfiguration configuration)
         {
             this.configuration = configuration;
         }

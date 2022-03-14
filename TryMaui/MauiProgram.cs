@@ -19,7 +19,7 @@ public static class MauiProgram
             });
 
         builder.Services.AddSingleton<MainPage>();
-        builder.Services.AddSingleton<IDatabaseSyncService, DatabaseSyncService>();
+        builder.Services.AddSingleton<IDatabaseSyncService, SqlDataSyncService>();
         builder.Services.AddSingleton<IReportGenerationService, PdfGenerationService>();
         builder.Services.AddSingleton<IDialogsService, WindowsDialogsService>();
 
