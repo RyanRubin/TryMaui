@@ -55,6 +55,7 @@
 	<ItemGroup>
 	  <None Remove="appsettings.json" />
 	  <None Remove="ReportTemplates\PersonReport.html" />
+	  <None Remove="Resources\Raw\Spinner.gif" />
 	</ItemGroup>
 
 	<ItemGroup>
