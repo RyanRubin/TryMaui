@@ -9,6 +9,7 @@ namespace TryMaui.Services
     public interface IDialogsService
     {
         string ShowSaveFileDialog(string fileName, string filter);
+        string ShowOpenFileDialog(string filter);
         DialogBoxCommandID ShowMessageBox(string text, string title, MessageBoxCheckFlags flags);
     }
 }

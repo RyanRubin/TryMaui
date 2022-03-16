@@ -14,6 +14,7 @@
                     <Button Text="Server to Local Sync" Clicked="OnServerToLocalSync_Clicked" />
                     <Button Text="Generate and Open PDF" Clicked="OnGenerateAndOpenPdf_Clicked" />
                     <Button Text="Show Save File Dialog" Clicked="OnShowSaveFileDialog_Clicked" />
+                    <Button Text="Show Open File Dialog" Clicked="OnShowOpenFileDialog_Clicked" />
                 </StackLayout>
 
                 <Label 
@@ -48,7 +49,7 @@
                     HorizontalOptions="Center" />
 
             </Grid>
-            <Grid RowDefinitions="*,Auto,Auto,*" BackgroundColor="Black" Opacity="0.75" IsVisible="true">
+            <Grid RowDefinitions="*,Auto,Auto,*" BackgroundColor="Black" Opacity="0.75" IsVisible="false">
                 <Image Grid.Row="1" HorizontalOptions="Center" Source="Spinner.gif" WidthRequest="500" HeightRequest="500"></Image>
                 <Label Grid.Row="2" HorizontalOptions="Center" TextColor="White" Margin="0,-200,0,0">SYNC IN PROGRESS</Label>
             </Grid>

@@ -60,6 +60,11 @@ public partial class MainPage : ContentPage
         result = dialogsService.ShowMessageBox("Test MB_YESNO", "title", MessageBoxCheckFlags.MB_YESNO);
     }
 
+    private void OnShowOpenFileDialog_Clicked(object sender, EventArgs e)
+    {
+        string ret = dialogsService.ShowOpenFileDialog("All Files (*.*)|*.*");
+    }
+
     private void OnCounterClicked(object sender, EventArgs e)
     {
         count++;

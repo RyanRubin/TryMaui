@@ -40,6 +40,9 @@ namespace TryMaui.Services
         [DllImport("Comdlg32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern bool GetSaveFileName(ref OpenFileName lpofn);
 
+        [DllImport("Comdlg32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern bool GetOpenFileName(ref OpenFileName lpofn);
+
         [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
         private static extern int MessageBox(IntPtr hWnd, String text, String caption, uint type);
 
@@ -52,6 +55,23 @@ namespace TryMaui.Services
             ofn.lpstrFilter = $"{filter.Replace("|", "\0")}\0";
 
             if (GetSaveFileName(ref ofn))
+            {
+                return ofn.lpstrFile;
+            }
+
+            return "";
+        }
+
+        public string ShowOpenFileDialog(string filter)
+        {
+            var ofn = new OpenFileName();
+            ofn.lStructSize = Marshal.SizeOf(ofn);
+            ofn.lpstrFile = new string(new char[256]);
+            ofn.nMaxFile = ofn.lpstrFile.Length;
+            ofn.lpstrFilter = $"{filter.Replace("|", "\0")}\0";
+            ofn.Flags = (int)(OpenSaveFileDialgueFlags.OFN_PATHMUSTEXIST | OpenSaveFileDialgueFlags.OFN_FILEMUSTEXIST);
+
+            if (GetOpenFileName(ref ofn))
             {
                 return ofn.lpstrFile;
             }
